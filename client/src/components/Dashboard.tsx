@@ -28,14 +28,15 @@ export default function Dashboard() {
       const res = await fetch(`/api/posts/${username}`)
       if (!res.ok) {
         const errorData = await res.json()
-        if (errorData.error?.includes('User not found')) {
-          throw new Error('User not found. Please check the username and try again.')
+        if (res.status === 404) {
+          throw new Error(errorData.error || 'User not found. Please check the username and try again.')
         }
         throw new Error(errorData.error || 'Failed to fetch posts. Please try again later.')
       }
       return res.json()
     },
-    enabled: !!username
+    enabled: !!username,
+    retry: 1, // Only retry once to avoid excessive rate limit hits
   })
 
   const handleSubmit = (submittedUsername: string) => {

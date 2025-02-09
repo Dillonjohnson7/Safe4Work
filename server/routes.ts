@@ -12,21 +12,29 @@ export function registerRoutes(app: Express): Server {
 
       // If no posts exist, fetch from Twitter and store them
       if (posts.length === 0) {
-        const twitterPosts = await twitterService.getUserTweets(username);
-        // Store tweets in database
-        for (const post of twitterPosts) {
-          await storage.createPost({
-            username,
-            ...post
-          });
+        try {
+          const twitterPosts = await twitterService.getUserTweets(username);
+          // Store tweets in database
+          for (const post of twitterPosts) {
+            await storage.createPost({
+              username,
+              ...post
+            });
+          }
+          posts = await storage.getPostsByUsername(username);
+        } catch (twitterError: any) {
+          // Pass through specific error messages from Twitter service
+          throw new Error(twitterError.message);
         }
-        posts = await storage.getPostsByUsername(username);
       }
 
       res.json(posts);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching posts:", error);
-      res.status(500).json({ error: "Failed to fetch posts" });
+      const statusCode = error.message.includes('User not found') ? 404 : 500;
+      res.status(statusCode).json({ 
+        error: error.message || "Failed to fetch posts" 
+      });
     }
   });
 
