@@ -18,10 +18,10 @@ export function registerRoutes(app: Express): Server {
     const { username } = req.params;
     try {
       const samplePosts = [
-        // Good posts
+        // Good posts - Clean language
         {
           username,
-          content: "Excited to share our latest research on sustainable technology! Check out the whitepaper in bio. #Innovation #Sustainability",
+          content: "Amazing conference today! The insights on AI ethics were truly enlightening. Looking forward to implementing these principles in our work. #TechEthics #Innovation",
           category: "good",
           platform: "twitter",
           likes: 245,
@@ -44,10 +44,10 @@ export function registerRoutes(app: Express): Server {
           shares: 132,
         },
 
-        // Bad posts
+        // Bad posts - Mild profanity/unprofessional language
         {
           username,
-          content: "This meeting could've been an email... 🙄 #CorporateLife",
+          content: "This damn meeting is dragging on forever... Someone please save me! 🙄 #CorporateBS",
           category: "bad",
           platform: "twitter",
           likes: 56,
@@ -63,17 +63,17 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "Why do recruiters keep ghosting after interviews? So unprofessional...",
+          content: "Why do recruiters keep ghosting after interviews? So freaking unprofessional...",
           category: "bad",
           platform: "reddit",
           likes: 234,
           shares: 45,
         },
 
-        // Ugly posts
+        // Ugly posts - Strong profanity
         {
           username,
-          content: "My boss is the worst! Can't believe they rejected my proposal without even reading it. Time to update that resume... 🤬",
+          content: "F**k this job! My a**hole boss just rejected my proposal without even reading it. Time to update that resume... 🤬",
           category: "ugly",
           platform: "twitter",
           likes: 23,
@@ -89,7 +89,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "Just got passed over for promotion again. Pretty sure it's because I'm not part of the boss's favorite clique. This company's toxic AF.",
+          content: "Just got passed over for promotion again. Pretty sure it's because I'm not part of the boss's favorite clique. This place is toxic AF.",
           category: "ugly",
           platform: "reddit",
           likes: 156,
