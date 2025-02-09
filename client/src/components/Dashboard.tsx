@@ -5,6 +5,7 @@ import UserInput from "./UserInput"
 import PostsDisplay from "./PostsDisplay"
 import Statistics from "./Statistics"
 import TabularView from "./TabularView"
+import PlatformToggle, { type Platform } from "./PlatformToggle"
 import { useQuery } from "@tanstack/react-query"
 
 export interface Post {
@@ -20,9 +21,10 @@ export interface Post {
 export default function Dashboard() {
   const [username, setUsername] = useState("")
   const [view, setView] = useState<"dashboard" | "tabular">("dashboard")
+  const [selectedPlatform, setSelectedPlatform] = useState<Platform>("twitter")
 
   const { data: posts = [], isLoading } = useQuery({
-    queryKey: ['/api/posts', username],
+    queryKey: ['/api/posts', username, selectedPlatform],
     queryFn: async () => {
       if (!username) return []
       // First try to get existing posts
@@ -45,6 +47,10 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
+      <PlatformToggle 
+        selectedPlatform={selectedPlatform} 
+        onPlatformChange={setSelectedPlatform} 
+      />
       <UserInput onSubmit={handleSubmit} isLoading={isLoading} />
       {username && !isLoading && (
         <div className="space-y-8 animate-fade-in">
