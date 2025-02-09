@@ -4,11 +4,8 @@ export class TwitterService {
   private client: TwitterApi;
 
   constructor() {
-    this.client = new TwitterApi({
-      appKey: process.env.TWITTER_API_KEY!,
-      appSecret: process.env.TWITTER_API_SECRET!,
-      bearerToken: process.env.TWITTER_BEARER_TOKEN!,
-    });
+    // Use bearer token authentication for app-only context
+    this.client = new TwitterApi(process.env.TWITTER_BEARER_TOKEN!);
   }
 
   async getUserTweets(username: string): Promise<any[]> {
@@ -47,9 +44,9 @@ export class TwitterService {
     // This will be replaced with ML classification
     const profanityList = ["damn", "hell", "crap"];
     const severeList = ["fuck", "shit", "ass"];
-    
+
     const lowerText = text.toLowerCase();
-    
+
     if (severeList.some(word => lowerText.includes(word))) {
       return "ugly";
     } else if (profanityList.some(word => lowerText.includes(word))) {
