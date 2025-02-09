@@ -47,7 +47,8 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
-      <div className="bg-white p-4 rounded-lg shadow-sm">
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h3 className="text-lg font-semibold text-gray-700 mb-4 text-center">Select Platform</h3>
         <PlatformToggle 
           selectedPlatform={selectedPlatform} 
           onPlatformChange={setSelectedPlatform} 
