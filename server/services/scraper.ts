@@ -13,15 +13,21 @@ export class TwitterScraper {
 
   async init() {
     try {
-      // Launch browser
+      // Launch browser with Replit-specific configuration
       this.browser = await chromium.launch({
-        chromiumSandbox: false // Required for Replit environment
+        executablePath: '/nix/store/x205pbkd5xh5g4iv0g58xjla55has3cx-chromium-108.0.5359.94/bin/chromium',
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--single-process'
+        ]
       });
       this.context = await this.browser.newContext();
       console.log("Browser initialized successfully");
     } catch (error) {
       console.error("Failed to initialize browser:", error);
-      throw error;
+      throw new Error("Failed to initialize browser. Please try again later.");
     }
   }
 
@@ -53,7 +59,7 @@ export class TwitterScraper {
           // Extract metrics
           const likesElement = tweet.querySelector('[data-testid="like"] span');
           const sharesElement = tweet.querySelector('[data-testid="retweet"] span');
-          
+
           // Extract timestamp
           const timeElement = tweet.querySelector('time');
           const timestamp = timeElement ? timeElement.getAttribute('datetime') : new Date().toISOString();
