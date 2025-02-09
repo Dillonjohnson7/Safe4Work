@@ -14,7 +14,6 @@ export class TwitterScraper {
 
   async init() {
     try {
-      // Launch browser with Replit-specific configuration
       this.browser = await chromium.launch({
         executablePath: '/nix/store/x205pbkd5xh5g4iv0g58xjla55has3cx-chromium-108.0.5359.94/bin/chromium',
         args: [
@@ -44,26 +43,38 @@ export class TwitterScraper {
 
       // Navigate to user's profile
       await page.goto(`https://twitter.com/${cleanUsername}`, {
-        waitUntil: 'networkidle'
+        waitUntil: 'networkidle',
+        timeout: 30000
       });
 
+      // Handle login wall if it appears
+      const loginWall = await page.$('[data-testid="loginButton"]');
+      if (loginWall) {
+        console.log("Login wall detected, using alternative scraping method");
+        // Use Nitter as a fallback
+        await page.goto(`https://nitter.net/${cleanUsername}`, {
+          waitUntil: 'networkidle',
+          timeout: 30000
+        });
+      }
+
       // Wait for tweets to load
-      await page.waitForSelector('article[data-testid="tweet"]', { timeout: 10000 });
+      await page.waitForSelector('[data-testid="tweet"]', { timeout: 10000 })
+        .catch(() => {
+          throw new Error("Could not find any tweets. The account might be private or doesn't exist.");
+        });
 
       // Extract tweets
-      const tweets = await page.$$eval('article[data-testid="tweet"]', (elements: any[], targetLimit: number) => {
+      const tweets = await page.$$eval('[data-testid="tweet"]', (elements: any[], targetLimit: number) => {
         return elements.slice(0, targetLimit).map(tweet => {
           // Extract tweet text
           const contentElement = tweet.querySelector('[data-testid="tweetText"]');
-          const content = contentElement ? contentElement.textContent : '';
+          const content = contentElement ? contentElement.textContent.trim() : '';
 
           // Extract metrics
           const likesElement = tweet.querySelector('[data-testid="like"] span');
           const sharesElement = tweet.querySelector('[data-testid="retweet"] span');
-
-          // Extract timestamp
           const timeElement = tweet.querySelector('time');
-          const timestamp = timeElement ? timeElement.getAttribute('datetime') : new Date().toISOString();
 
           // Convert string numbers to integers (e.g., "1.5K" -> 1500)
           const parseMetric = (str: string) => {
@@ -82,11 +93,15 @@ export class TwitterScraper {
             content,
             likes: parseMetric(likesElement?.textContent || '0'),
             shares: parseMetric(sharesElement?.textContent || '0'),
-            timestamp: timestamp || new Date().toISOString(),
+            timestamp: timeElement?.getAttribute('datetime') || new Date().toISOString(),
             platform: "Twitter"
           };
         });
       }, limit);
+
+      if (tweets.length === 0) {
+        throw new Error("No tweets found for this user.");
+      }
 
       console.log(`Successfully scraped ${tweets.length} tweets`);
       return tweets;
@@ -99,10 +114,9 @@ export class TwitterScraper {
       if (error.message.includes('timeout')) {
         throw new Error('Timed out while loading tweets. Please try again.');
       }
-      throw new Error('Failed to fetch tweets. Please try again later.');
+      throw error;
     } finally {
       try {
-        // Clean up
         if (this.browser) {
           await this.browser.close();
           this.browser = null;
@@ -131,5 +145,4 @@ export class TwitterScraper {
   }
 }
 
-// Create singleton instance
 export const twitterScraper = new TwitterScraper();
