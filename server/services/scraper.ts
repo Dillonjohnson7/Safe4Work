@@ -5,6 +5,7 @@ interface ScrapedTweet {
   likes: number;
   shares: number;
   timestamp: string;
+  platform: string;
 }
 
 export class TwitterScraper {
@@ -81,7 +82,8 @@ export class TwitterScraper {
             content,
             likes: parseMetric(likesElement?.textContent || '0'),
             shares: parseMetric(sharesElement?.textContent || '0'),
-            timestamp: timestamp || new Date().toISOString()
+            timestamp: timestamp || new Date().toISOString(),
+            platform: "Twitter"
           };
         });
       }, limit);
@@ -99,11 +101,15 @@ export class TwitterScraper {
       }
       throw new Error('Failed to fetch tweets. Please try again later.');
     } finally {
-      // Clean up
-      if (this.browser) {
-        await this.browser.close();
-        this.browser = null;
-        this.context = null;
+      try {
+        // Clean up
+        if (this.browser) {
+          await this.browser.close();
+          this.browser = null;
+          this.context = null;
+        }
+      } catch (error) {
+        console.error('Error closing browser:', error);
       }
     }
   }

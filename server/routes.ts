@@ -14,6 +14,7 @@ export function registerRoutes(app: Express): Server {
       if (posts.length === 0) {
         try {
           const twitterPosts = await twitterService.getUserTweets(username);
+
           // Store tweets in database
           for (const post of twitterPosts) {
             await storage.createPost({
@@ -23,9 +24,11 @@ export function registerRoutes(app: Express): Server {
               platform: post.platform,
               likes: post.likes,
               shares: post.shares,
-              timestamp: new Date(post.timestamp)
+              timestamp: new Date() // Use current timestamp for consistency
             });
           }
+
+          // Fetch the stored posts
           posts = await storage.getPostsByUsername(username);
         } catch (twitterError: any) {
           console.error("Twitter service error:", twitterError);

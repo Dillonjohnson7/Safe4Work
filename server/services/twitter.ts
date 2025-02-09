@@ -2,6 +2,7 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { twitterScraper } from './scraper';
 
 const execAsync = promisify(exec);
 const __filename = fileURLToPath(import.meta.url);
@@ -12,15 +13,11 @@ export class TwitterService {
     try {
       console.log(`Fetching tweets for user: ${username}`);
 
-      // Execute the Python script
-      const scriptPath = path.join(__dirname, 'twitter_scraper.py');
-      const { stdout, stderr } = await execAsync(`python3 ${scriptPath}`);
+      // Initialize scraper if needed
+      await twitterScraper.init();
 
-      if (stderr) {
-        console.error('Python script output:', stderr);
-      }
-
-      const tweets = JSON.parse(stdout);
+      // Get tweets using Playwright-based scraper
+      const tweets = await twitterScraper.scrapeUserTweets(username, 5);
 
       // Add categorization to each tweet
       return tweets.map((tweet: any) => ({
