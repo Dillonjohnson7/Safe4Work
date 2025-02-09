@@ -14,21 +14,16 @@ export class TwitterService {
 
       // Execute the Python script
       const scriptPath = path.join(__dirname, 'twitter_scraper.py');
-      const { stdout, stderr } = await execAsync(`python3 ${scriptPath} ${username} 5`);
+      const { stdout, stderr } = await execAsync(`python3 ${scriptPath}`);
 
       if (stderr) {
-        console.error('Python script error:', stderr);
-        throw new Error('Failed to fetch tweets');
+        console.error('Python script output:', stderr);
       }
 
-      const result = JSON.parse(stdout);
-
-      if (result.error) {
-        throw new Error(result.error);
-      }
+      const tweets = JSON.parse(stdout);
 
       // Add categorization to each tweet
-      return result.map((tweet: any) => ({
+      return tweets.map((tweet: any) => ({
         ...tweet,
         category: this.categorizeContent(tweet.content)
       }));
@@ -40,8 +35,6 @@ export class TwitterService {
   }
 
   private categorizeContent(text: string): "good" | "bad" | "ugly" {
-    // Simple categorization based on basic word lists
-    // This will be replaced with ML classification
     const profanityList = ["damn", "hell", "crap"];
     const severeList = ["fuck", "shit", "ass"];
 
