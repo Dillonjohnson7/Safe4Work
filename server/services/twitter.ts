@@ -10,8 +10,11 @@ export class TwitterService {
 
   async getUserTweets(username: string): Promise<any[]> {
     try {
+      // Remove @ if present and ensure username is valid
+      const cleanUsername = username.replace(/^@/, '');
+
       // First get the user ID from username
-      const user = await this.client.v2.userByUsername(username);
+      const user = await this.client.v2.userByUsername(cleanUsername);
       if (!user.data) {
         throw new Error('User not found');
       }
@@ -28,7 +31,7 @@ export class TwitterService {
         platform: "Twitter",
         likes: tweet.public_metrics?.like_count || 0,
         shares: tweet.public_metrics?.retweet_count || 0,
-        timestamp: tweet.created_at,
+        timestamp: new Date(tweet.created_at!).toISOString(),
         // For now, categorize based on simple criteria
         // This will be replaced with ML classification later
         category: this.categorizeContent(tweet.text),
