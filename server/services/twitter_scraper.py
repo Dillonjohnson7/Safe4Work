@@ -3,34 +3,37 @@ import sys
 from datetime import datetime, timezone
 
 def get_mock_tweets():
+    # Helper function to get properly formatted ISO timestamp
+    current_time = datetime.now(timezone.utc).isoformat()
+
     # Mock data for development purposes
     return [
         {
             "content": "Just finished an exciting project presentation! #coding #tech",
             "likes": 42,
             "shares": 12,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": current_time,
             "platform": "Twitter"
         },
         {
             "content": "Great team meeting today. Love collaborating with smart people!",
             "likes": 28,
             "shares": 5,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": current_time,
             "platform": "Twitter"
         },
         {
             "content": "Some inappropriate language here that should be flagged as bad! damn.",
             "likes": 15,
             "shares": 3,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": current_time,
             "platform": "Twitter"
         },
         {
             "content": "This post contains really inappropriate content and should be marked as ugly! sh*t",
             "likes": 8,
             "shares": 1,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": current_time,
             "platform": "Twitter"
         }
     ]
