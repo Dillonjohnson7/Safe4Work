@@ -13,15 +13,14 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
-  // Add sample posts for testing
   app.post("/api/posts/sample/:username", async (req, res) => {
     const { username } = req.params;
     try {
       const samplePosts = [
-        // Good posts - No profanity
+        // Good posts - No profanity, clean language
         {
           username,
-          content: "Just tried the new coffee shop downtown! The atmosphere is amazing and their lattes are absolutely incredible. Going to make this my new morning spot! ✨☕️",
+          content: "Just got a new bike! Can't wait to try it out on the trails this weekend. Perfect weather for outdoor adventures! 🚲",
           category: "good",
           platform: "twitter",
           likes: 245,
@@ -29,7 +28,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "Can't believe how packed the gym is today! Everyone keeping their new year resolutions I guess. Waiting 20 minutes for a treadmill... 🏃‍♂️",
+          content: "Made homemade pasta for the first time! The sauce turned out amazing. Cooking is becoming my new favorite hobby 🍝",
           category: "good",
           platform: "twitter",
           likes: 178,
@@ -37,7 +36,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "The new Spider-Man movie was absolutely mindblowing! Best one yet in my opinion. The visuals were stunning and that ending... wow! No spoilers but you need to see this! 🎬",
+          content: "Really enjoyed the sunset at the beach today. Nature never fails to amaze me with its beautiful colors! 🌅",
           category: "good",
           platform: "twitter",
           likes: 892,
@@ -47,7 +46,7 @@ export function registerRoutes(app: Express): Server {
         // Bad posts - Mild profanity
         {
           username,
-          content: "Damn traffic is insane today! Been stuck on the highway for an hour. This is what I get for leaving 10 minutes late... 🚗😤",
+          content: "Damn this traffic! Been stuck here for an hour, gonna be late for the meeting again... 🚗😤",
           category: "bad",
           platform: "twitter",
           likes: 56,
@@ -55,7 +54,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "My neighbor's dog won't stop barking. It's 3am for hell's sake! Some people are so inconsiderate... 😤",
+          content: "What the hell is wrong with this weather? Was sunny 5 minutes ago, now it's pouring! 🌧️",
           category: "bad",
           platform: "twitter",
           likes: 89,
@@ -63,7 +62,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "This airline service is crap! 3-hour delay and not even a freaking apology. Never flying with them again! ✈️😠",
+          content: "This movie is absolute crap. Wasted 2 hours of my life I'll never get back. Don't bother watching it! 🎬👎",
           category: "bad",
           platform: "twitter",
           likes: 234,
@@ -73,7 +72,7 @@ export function registerRoutes(app: Express): Server {
         // Ugly posts - Strong profanity
         {
           username,
-          content: "F**king delivery driver left my food at the wrong apartment AGAIN! How hard is it to read the damn apartment number?! 🤬",
+          content: "F**king hate it when people don't use their turn signals! Learn to drive you piece of s**t! 🚙😡",
           category: "ugly",
           platform: "twitter",
           likes: 23,
@@ -81,7 +80,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "This b**ch in front of me at Starbucks just ordered 10 different drinks and none of them were simple. Some of us have sh*t to do! ☕️😡",
+          content: "This b**ch at the store just cut in line and had the nerve to tell ME to calm down! 🤬",
           category: "ugly",
           platform: "twitter",
           likes: 67,
@@ -89,7 +88,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "My roommate ate my leftover pizza, that motherf**ker! I was saving that all day. Time to find a new place cause I'm done with this bulls**t! 🍕",
+          content: "My a**hole neighbor's dog won't shut the f**k up at 3am! I'm gonna lose my s**t! 🐕😤",
           category: "ugly",
           platform: "twitter",
           likes: 156,
