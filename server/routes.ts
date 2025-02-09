@@ -1,48 +1,42 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { twitterService } from "./services/twitter";
 
 export function registerRoutes(app: Express): Server {
   app.get("/api/posts/:username", async (req, res) => {
     const { username } = req.params;
     try {
-      // First try to get cached posts from database
-      let posts = await storage.getPostsByUsername(username);
+      const posts = await storage.getPostsByUsername(username);
+      res.json(posts);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch posts" });
+    }
+  });
 
-      // If no posts exist, fetch from Twitter and store them
-      if (posts.length === 0) {
-        try {
-          const twitterPosts = await twitterService.getUserTweets(username);
+  // Add sample posts for testing
+  app.post("/api/posts/sample/:username", async (req, res) => {
+    const { username } = req.params;
+    try {
+      const categories = ["good", "bad", "ugly"] as const;
+      const platforms = ["Twitter", "LinkedIn", "Facebook", "Instagram"];
 
-          // Store tweets in database
-          for (const post of twitterPosts) {
-            await storage.createPost({
-              username,
-              content: post.content,
-              category: post.category,
-              platform: post.platform,
-              likes: post.likes,
-              shares: post.shares,
-              timestamp: new Date() // Use current timestamp for consistency
-            });
-          }
-
-          // Fetch the stored posts
-          posts = await storage.getPostsByUsername(username);
-        } catch (twitterError: any) {
-          console.error("Twitter service error:", twitterError);
-          throw new Error(twitterError.message || "Failed to fetch tweets");
-        }
+      for (let i = 0; i < 30; i++) {
+        const category = categories[Math.floor(Math.random() * categories.length)];
+        await storage.createPost({
+          username,
+          content: `Sample ${category} post for ${username} - ${i}`,
+          category,
+          platform: platforms[Math.floor(Math.random() * platforms.length)],
+          likes: Math.floor(Math.random() * 100),
+          shares: Math.floor(Math.random() * 50),
+        });
       }
 
+      const posts = await storage.getPostsByUsername(username);
       res.json(posts);
-    } catch (error: any) {
-      console.error("Error fetching posts:", error);
-      const statusCode = error.message.includes('User not found') ? 404 : 500;
-      res.status(statusCode).json({ 
-        error: error.message || "Failed to fetch posts" 
-      });
+    } catch (error) {
+      console.error("Error creating sample posts:", error);
+      res.status(500).json({ error: "Failed to create sample posts" });
     }
   });
 

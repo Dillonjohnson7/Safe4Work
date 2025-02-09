@@ -21,23 +21,22 @@ export default function Dashboard() {
   const [username, setUsername] = useState("")
   const [view, setView] = useState<"dashboard" | "tabular">("dashboard")
 
-  const { data: posts = [], isLoading, error } = useQuery({
+  const { data: posts = [], isLoading } = useQuery({
     queryKey: ['/api/posts', username],
     queryFn: async () => {
       if (!username) return []
+      // First try to get existing posts
       const res = await fetch(`/api/posts/${username}`)
-      if (!res.ok) {
-        const errorData = await res.json()
-        if (res.status === 404) {
-          throw new Error(errorData.error || 'User not found. Please check the username and try again.')
-        }
-        throw new Error(errorData.error || 'Failed to fetch posts. Please try again later.')
+      const posts = await res.json()
+
+      // If no posts exist, create sample posts
+      if (posts.length === 0) {
+        const sampleRes = await fetch(`/api/posts/sample/${username}`, { method: 'POST' })
+        return sampleRes.json()
       }
-      return res.json()
+      return posts
     },
-    enabled: !!username,
-    retry: false, // Disable retries to avoid unnecessary rate limit hits
-    refetchOnWindowFocus: false, // Disable automatic refetching to preserve rate limits
+    enabled: !!username
   })
 
   const handleSubmit = (submittedUsername: string) => {
@@ -47,12 +46,7 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       <UserInput onSubmit={handleSubmit} isLoading={isLoading} />
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
-          {error instanceof Error ? error.message : 'An error occurred'}
-        </div>
-      )}
-      {username && !isLoading && !error && (
+      {username && !isLoading && (
         <div className="space-y-8 animate-fade-in">
           <Statistics posts={posts} />
           <div className="flex justify-center space-x-4">
