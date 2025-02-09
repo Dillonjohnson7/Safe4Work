@@ -47,10 +47,12 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
-      <PlatformToggle 
-        selectedPlatform={selectedPlatform} 
-        onPlatformChange={setSelectedPlatform} 
-      />
+      <div className="bg-white p-4 rounded-lg shadow-sm">
+        <PlatformToggle 
+          selectedPlatform={selectedPlatform} 
+          onPlatformChange={setSelectedPlatform} 
+        />
+      </div>
       <UserInput onSubmit={handleSubmit} isLoading={isLoading} />
       {username && !isLoading && (
         <div className="space-y-8 animate-fade-in">
