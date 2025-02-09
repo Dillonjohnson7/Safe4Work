@@ -18,13 +18,18 @@ export function registerRoutes(app: Express): Server {
           for (const post of twitterPosts) {
             await storage.createPost({
               username,
-              ...post
+              content: post.content,
+              category: post.category,
+              platform: post.platform,
+              likes: post.likes,
+              shares: post.shares,
+              timestamp: new Date(post.timestamp)
             });
           }
           posts = await storage.getPostsByUsername(username);
         } catch (twitterError: any) {
-          // Pass through specific error messages from Twitter service
-          throw new Error(twitterError.message);
+          console.error("Twitter service error:", twitterError);
+          throw new Error(twitterError.message || "Failed to fetch tweets");
         }
       }
 
