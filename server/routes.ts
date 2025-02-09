@@ -18,10 +18,10 @@ export function registerRoutes(app: Express): Server {
     const { username } = req.params;
     try {
       const samplePosts = [
-        // Good posts - Clean language
+        // Good posts - No profanity
         {
           username,
-          content: "Amazing conference today! The insights on AI ethics were truly enlightening. Looking forward to implementing these principles in our work. #TechEthics #Innovation",
+          content: "Just tried the new coffee shop downtown! The atmosphere is amazing and their lattes are absolutely incredible. Going to make this my new morning spot! ✨☕️",
           category: "good",
           platform: "twitter",
           likes: 245,
@@ -29,25 +29,25 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "Just published a new article on LinkedIn about leadership lessons learned throughout my career. Grateful for all the mentors who helped shape my journey.",
+          content: "Can't believe how packed the gym is today! Everyone keeping their new year resolutions I guess. Waiting 20 minutes for a treadmill... 🏃‍♂️",
           category: "good",
-          platform: "facebook",
+          platform: "twitter",
           likes: 178,
           shares: 45,
         },
         {
           username,
-          content: "TIL: The most efficient way to implement binary search in production systems. Here's my analysis with benchmarks and code examples.",
+          content: "The new Spider-Man movie was absolutely mindblowing! Best one yet in my opinion. The visuals were stunning and that ending... wow! No spoilers but you need to see this! 🎬",
           category: "good",
-          platform: "reddit",
+          platform: "twitter",
           likes: 892,
           shares: 132,
         },
 
-        // Bad posts - Mild profanity/unprofessional language
+        // Bad posts - Mild profanity
         {
           username,
-          content: "This damn meeting is dragging on forever... Someone please save me! 🙄 #CorporateBS",
+          content: "Damn traffic is insane today! Been stuck on the highway for an hour. This is what I get for leaving 10 minutes late... 🚗😤",
           category: "bad",
           platform: "twitter",
           likes: 56,
@@ -55,17 +55,17 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "Taking a 'sick day' to go to the beach. Don't tell my boss! 🏖️ #MentalHealthDay",
+          content: "My neighbor's dog won't stop barking. It's 3am for hell's sake! Some people are so inconsiderate... 😤",
           category: "bad",
-          platform: "facebook",
+          platform: "twitter",
           likes: 89,
           shares: 3,
         },
         {
           username,
-          content: "Why do recruiters keep ghosting after interviews? So freaking unprofessional...",
+          content: "This airline service is crap! 3-hour delay and not even a freaking apology. Never flying with them again! ✈️😠",
           category: "bad",
-          platform: "reddit",
+          platform: "twitter",
           likes: 234,
           shares: 45,
         },
@@ -73,7 +73,7 @@ export function registerRoutes(app: Express): Server {
         // Ugly posts - Strong profanity
         {
           username,
-          content: "F**k this job! My a**hole boss just rejected my proposal without even reading it. Time to update that resume... 🤬",
+          content: "F**king delivery driver left my food at the wrong apartment AGAIN! How hard is it to read the damn apartment number?! 🤬",
           category: "ugly",
           platform: "twitter",
           likes: 23,
@@ -81,17 +81,17 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "Had way too many drinks at the company party last night... Those karaoke videos are going to haunt me forever 🍺🎤 #OfficePartyFail",
+          content: "This b**ch in front of me at Starbucks just ordered 10 different drinks and none of them were simple. Some of us have sh*t to do! ☕️😡",
           category: "ugly",
-          platform: "facebook",
+          platform: "twitter",
           likes: 67,
           shares: 15,
         },
         {
           username,
-          content: "Just got passed over for promotion again. Pretty sure it's because I'm not part of the boss's favorite clique. This place is toxic AF.",
+          content: "My roommate ate my leftover pizza, that motherf**ker! I was saving that all day. Time to find a new place cause I'm done with this bulls**t! 🍕",
           category: "ugly",
-          platform: "reddit",
+          platform: "twitter",
           likes: 156,
           shares: 34,
         }
