@@ -1,23 +1,41 @@
-import { twitterScraper } from "./scraper";
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import path from 'path';
+
+const execAsync = promisify(exec);
 
 export class TwitterService {
   async getUserTweets(username: string): Promise<any[]> {
     try {
       console.log(`Fetching tweets for user: ${username}`);
-      const tweets = await twitterScraper.scrapeUserTweets(username);
 
-      // Transform tweets to match our Post schema
-      return await Promise.all(tweets.map(async (tweet) => ({
+      // Execute the Python script
+      const scriptPath = path.join(__dirname, 'twitter_scraper.py');
+      const { stdout, stderr } = await execAsync(`python3 ${scriptPath} ${username} 5`);
+
+      if (stderr) {
+        console.error('Python script error:', stderr);
+        throw new Error('Failed to fetch tweets');
+      }
+
+      const result = JSON.parse(stdout);
+
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      // Add categorization to each tweet
+      return result.map((tweet: any) => ({
         ...tweet,
-        platform: "Twitter",
-        category: await twitterScraper.categorizeContent(tweet.content)
-      })));
+        category: this.categorizeContent(tweet.content)
+      }));
 
     } catch (error: any) {
       console.error('Error fetching tweets:', error);
       throw new Error(error.message || 'Failed to fetch tweets. Please try again later.');
     }
   }
+
   private categorizeContent(text: string): "good" | "bad" | "ugly" {
     // Simple categorization based on basic word lists
     // This will be replaced with ML classification
