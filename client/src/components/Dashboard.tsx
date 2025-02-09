@@ -20,13 +20,21 @@ export interface Post {
 export default function Dashboard() {
   const [username, setUsername] = useState("")
   const [view, setView] = useState<"dashboard" | "tabular">("dashboard")
-  
+
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['/api/posts', username],
     queryFn: async () => {
       if (!username) return []
+      // First try to get existing posts
       const res = await fetch(`/api/posts/${username}`)
-      return res.json()
+      const posts = await res.json()
+
+      // If no posts exist, create sample posts
+      if (posts.length === 0) {
+        const sampleRes = await fetch(`/api/posts/sample/${username}`, { method: 'POST' })
+        return sampleRes.json()
+      }
+      return posts
     },
     enabled: !!username
   })
