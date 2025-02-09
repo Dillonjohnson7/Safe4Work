@@ -36,7 +36,8 @@ export default function Dashboard() {
       return res.json()
     },
     enabled: !!username,
-    retry: 1, // Only retry once to avoid excessive rate limit hits
+    retry: false, // Disable retries to avoid unnecessary rate limit hits
+    refetchOnWindowFocus: false, // Disable automatic refetching to preserve rate limits
   })
 
   const handleSubmit = (submittedUsername: string) => {

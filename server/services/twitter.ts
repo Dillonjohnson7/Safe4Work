@@ -4,6 +4,7 @@ export class TwitterService {
   private client: TwitterApi;
   private rateLimitRetries: number = 3;
   private baseDelay: number = 1000; // 1 second
+  private userCache: Map<string, any> = new Map(); // Cache for user lookups
 
   constructor() {
     if (!process.env.TWITTER_BEARER_TOKEN) {
@@ -29,7 +30,10 @@ export class TwitterService {
     }
 
     if (retryCount >= this.rateLimitRetries) {
-      throw new Error("Rate limit exceeded. Please try again later.");
+      const resetTime = error.rateLimit?.reset 
+        ? new Date(error.rateLimit.reset * 1000).toLocaleTimeString()
+        : 'a few minutes';
+      throw new Error(`Twitter API rate limit reached. Please try again after ${resetTime}. Current access level only allows ${error.rateLimit?.limit || 3} requests per window.`);
     }
 
     // Exponential backoff with jitter
@@ -48,16 +52,21 @@ export class TwitterService {
         console.log(`Fetching tweets for user: ${cleanUsername}`);
 
         // First get the user ID from username
-        const user = await this.client.v2.userByUsername(cleanUsername);
-        if (!user.data) {
-          throw new Error('User not found. Please check the username and try again.');
+        let user = this.userCache.get(cleanUsername);
+        if (!user) {
+          const userResponse = await this.client.v2.userByUsername(cleanUsername);
+          if (!userResponse.data) {
+            throw new Error('User not found. Please check the username and try again.');
+          }
+          user = userResponse.data;
+          this.userCache.set(cleanUsername, user);
         }
 
-        console.log(`Found user ID: ${user.data.id}`);
+        console.log(`Found user ID: ${user.id}`);
 
         // Get user's tweets with full metrics
-        const tweets = await this.client.v2.userTimeline(user.data.id, {
-          max_results: 10, // Further reduced to avoid rate limits during testing
+        const tweets = await this.client.v2.userTimeline(user.id, {
+          max_results: 5, // Further reduced to avoid rate limits during testing
           "tweet.fields": ["created_at", "public_metrics"],
         });
 
@@ -96,7 +105,7 @@ export class TwitterService {
         // Handle authentication errors
         if (error.code === 401 || error.code === 403) {
           console.error('Authentication error:', error);
-          throw new Error('Twitter API authentication failed. Please check the API credentials.');
+          throw new Error('Please ensure you have provided valid Twitter API credentials with Elevated access level.');
         }
 
         // Handle other errors
