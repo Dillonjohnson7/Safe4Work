@@ -1,42 +1,32 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { twitterService } from "./services/twitter";
 
 export function registerRoutes(app: Express): Server {
   app.get("/api/posts/:username", async (req, res) => {
     const { username } = req.params;
     try {
-      const posts = await storage.getPostsByUsername(username);
-      res.json(posts);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch posts" });
-    }
-  });
+      // First try to get cached posts from database
+      let posts = await storage.getPostsByUsername(username);
 
-  // Add sample posts for testing
-  app.post("/api/posts/sample/:username", async (req, res) => {
-    const { username } = req.params;
-    try {
-      const categories = ["good", "bad", "ugly"] as const;
-      const platforms = ["Twitter", "LinkedIn", "Facebook", "Instagram"];
-
-      for (let i = 0; i < 30; i++) {
-        const category = categories[Math.floor(Math.random() * categories.length)];
-        await storage.createPost({
-          username,
-          content: `Sample ${category} post for ${username} - ${i}`,
-          category,
-          platform: platforms[Math.floor(Math.random() * platforms.length)],
-          likes: Math.floor(Math.random() * 100),
-          shares: Math.floor(Math.random() * 50),
-        });
+      // If no posts exist, fetch from Twitter and store them
+      if (posts.length === 0) {
+        const twitterPosts = await twitterService.getUserTweets(username);
+        // Store tweets in database
+        for (const post of twitterPosts) {
+          await storage.createPost({
+            username,
+            ...post
+          });
+        }
+        posts = await storage.getPostsByUsername(username);
       }
 
-      const posts = await storage.getPostsByUsername(username);
       res.json(posts);
     } catch (error) {
-      console.error("Error creating sample posts:", error);
-      res.status(500).json({ error: "Failed to create sample posts" });
+      console.error("Error fetching posts:", error);
+      res.status(500).json({ error: "Failed to fetch posts" });
     }
   });
 
