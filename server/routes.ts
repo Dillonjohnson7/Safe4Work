@@ -17,10 +17,10 @@ export function registerRoutes(app: Express): Server {
     const { username } = req.params;
     try {
       const samplePosts = [
-        // Good posts - No profanity, clean language
+        // Good posts - Completely clean, professional content
         {
           username,
-          content: "Just got a new bike! Can't wait to try it out on the trails this weekend. Perfect weather for outdoor adventures! 🚲",
+          content: "Excited to announce my new role as Senior Developer at TechCorp! Looking forward to this amazing opportunity. #NewBeginnings",
           category: "good",
           platform: "twitter",
           likes: 245,
@@ -28,7 +28,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "Made homemade pasta for the first time! The sauce turned out amazing. Cooking is becoming my new favorite hobby 🍝",
+          content: "Just completed a great webinar on AI ethics in technology. Fascinating discussions about responsible innovation! #TechEthics",
           category: "good",
           platform: "twitter",
           likes: 178,
@@ -36,17 +36,17 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "Really enjoyed the sunset at the beach today. Nature never fails to amaze me with its beautiful colors! 🌅",
+          content: "Proud to have contributed to our team's successful project launch today. Teamwork makes the dream work! 🚀",
           category: "good",
           platform: "twitter",
           likes: 892,
           shares: 132,
         },
 
-        // Bad posts - Mild profanity
+        // Bad posts - Mild profanity and unprofessional content
         {
           username,
-          content: "Damn this traffic! Been stuck here for an hour, gonna be late for the meeting again... 🚗😤",
+          content: "Damn this client is driving me crazy! Why can't people read the freaking documentation? 🤬",
           category: "bad",
           platform: "twitter",
           likes: 56,
@@ -54,7 +54,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "What the hell is wrong with this weather? Was sunny 5 minutes ago, now it's pouring! 🌧️",
+          content: "These idiots at tech support don't know what the hell they're doing. Been on hold for 2 hours! #BadService",
           category: "bad",
           platform: "twitter",
           likes: 89,
@@ -62,17 +62,17 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "This movie is absolute crap. Wasted 2 hours of my life I'll never get back. Don't bother watching it! 🎬👎",
+          content: "My boss is such a pain in the ass! Making us work overtime again. This crap needs to stop. 😤",
           category: "bad",
           platform: "twitter",
           likes: 234,
           shares: 45,
         },
 
-        // Ugly posts - Strong profanity
+        // Ugly posts - Strong profanity and highly inappropriate content
         {
           username,
-          content: "F**king hate it when people don't use their turn signals! Learn to drive you piece of s**t! 🚙😡",
+          content: "F**k this job and f**k this company! Everyone here is full of sh*t! Quitting this b*tch tomorrow! 🖕",
           category: "ugly",
           platform: "twitter",
           likes: 23,
@@ -80,7 +80,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "This b**ch at the store just cut in line and had the nerve to tell ME to calm down! 🤬",
+          content: "These stupid a** customers can kiss my f**king a**! I'm so done with this bulls**t! 🤬",
           category: "ugly",
           platform: "twitter",
           likes: 67,
@@ -88,7 +88,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "My a**hole neighbor's dog won't shut the f**k up at 3am! I'm gonna lose my s**t! 🐕😤",
+          content: "My coworker is a worthless piece of sh*t! Hope you get f**king fired you lazy b*stard! 😡",
           category: "ugly",
           platform: "twitter",
           likes: 156,
