@@ -9,6 +9,8 @@ import PlatformToggle, { type Platform } from "./PlatformToggle"
 import { useQuery } from "@tanstack/react-query"
 import { Card, CardHeader, CardContent } from "@/components/ui/card"
 import { RocketIcon, ShieldAlertIcon } from "lucide-react"
+import { Shield } from "lucide-react"; // Added import for Shield icon
+
 
 export interface Post {
   id: number
@@ -113,6 +115,15 @@ export default function Dashboard() {
                       <strong>Privacy Alert:</strong> The posts above contain personal information that could be used to identify you. 
                       Consider editing or removing posts containing sensitive details.
                     </p>
+                  </div>
+                  <div className="flex justify-center">
+                    <Button // Assumed Button component
+                      onClick={() => window.location.href = '/privacy-profile'}
+                      className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-full font-medium flex items-center gap-2 transition-all duration-200"
+                    >
+                      <Shield className="h-5 w-5" />
+                      Increase My Privacy by Obscuring my Data
+                    </Button>
                   </div>
                 </div>
               )}
