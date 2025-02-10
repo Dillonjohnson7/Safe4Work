@@ -74,17 +74,34 @@ export default function Dashboard() {
               <h3 className="text-xl font-semibold text-orange-700">Reddit PII Scanner</h3>
             </CardHeader>
             <CardContent>
-              <p className="text-orange-600">
-                Our Reddit scanner helps protect your privacy by identifying posts and comments that might contain personal identifiable information (PII). Enter your username to begin scanning.
+              <p className="text-orange-600 mb-4">
+                Our Reddit scanner helps protect your privacy by identifying posts and comments that might contain personal identifiable information (PII).
               </p>
               {username && (
-                <div className="mt-4 p-4 bg-white rounded-lg border border-orange-200">
-                  <p className="text-orange-800">
-                    Scanning Reddit posts for user "{username}" to identify potential PII exposure...
-                  </p>
-                  <p className="text-sm text-orange-600 mt-2">
-                    Note: This feature is currently in development. We'll notify you once it's ready!
-                  </p>
+                <div className="space-y-4">
+                  <div className="bg-white rounded-lg p-4 border border-orange-200">
+                    <h4 className="font-semibold text-orange-800 mb-2">Sample Posts Flagged for PII:</h4>
+                    <div className="space-y-4">
+                      <PIIPost
+                        content="Hey everyone! I'm John Smith and I just moved to 123 Oak Street, Seattle. Looking for recommendations for good restaurants in the area!"
+                        piiFound={["Full Name", "Street Address", "City"]}
+                      />
+                      <PIIPost
+                        content="Contact me at johnsmith@email.com or call (555) 123-4567 if you're interested in joining our tech meetup group."
+                        piiFound={["Email Address", "Phone Number"]}
+                      />
+                      <PIIPost
+                        content="Frustrated with my bank! Account #1234567890 at Western Union keeps getting charged fees. DOB: 04/15/1985"
+                        piiFound={["Bank Account Number", "Date of Birth"]}
+                      />
+                    </div>
+                  </div>
+                  <div className="p-4 bg-orange-100 rounded-lg">
+                    <p className="text-sm text-orange-800">
+                      <strong>Privacy Alert:</strong> The posts above contain personal information that could be used to identify you. 
+                      Consider editing or removing posts containing sensitive details.
+                    </p>
+                  </div>
                 </div>
               )}
             </CardContent>
@@ -129,6 +146,32 @@ export default function Dashboard() {
       </div>
       <UserInput onSubmit={handleSubmit} isLoading={isLoading} />
       {renderPlatformContent()}
+    </div>
+  )
+}
+
+interface PIIPostProps {
+  content: string
+  piiFound: string[]
+}
+
+function PIIPost({ content, piiFound }: PIIPostProps) {
+  return (
+    <div className="border border-red-200 rounded-lg p-4 bg-red-50">
+      <p className="text-gray-800 mb-2">{content}</p>
+      <div className="flex flex-wrap gap-2 mt-2">
+        {piiFound.map((pii) => (
+          <span
+            key={pii}
+            className="px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full"
+          >
+            {pii} Detected
+          </span>
+        ))}
+      </div>
+      <p className="text-sm text-red-600 mt-2">
+        ⚠️ This post contains personally identifiable information that could compromise your privacy.
+      </p>
     </div>
   )
 }
