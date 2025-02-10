@@ -28,7 +28,7 @@ function generateRandomEmail(name: string): string {
   const domains = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "protonmail.com"]
   const randomDomain = domains[Math.floor(Math.random() * domains.length)]
   const randomNum = Math.floor(Math.random() * 1000)
-  return `${name.toLowerCase().replace(/\s+/g, '.')}${randomNum}@${randomDomain}`
+  return `${name.toLowerCase().replace(/\s+/g, '.')}_${randomNum}@${randomDomain}`
 }
 
 function generateRandomPhone(): string {
@@ -40,51 +40,63 @@ function generateRandomPhone(): string {
 }
 
 function generateObfuscatedPosts(personalInfo: PersonalInfo[]): ObfuscatedPost[] {
-  const fakeNames = [
-    "Alex Rivera", "Sam Chen", "Jordan Taylor", "Casey Morgan", "Quinn Anderson",
-    "Riley Martinez", "Drew Thompson", "Parker Wilson", "Morgan Lee", "Taylor Kim"
-  ]
-  const fakeLocations = [
-    "Portland", "Vancouver", "San Francisco", "Austin", "Denver",
-    "Chicago", "Boston", "Miami", "Nashville", "Minneapolis"
-  ]
-  const fakeWorkplaces = [
-    "StartupCo", "InnovateTech", "DigitalWorks", "FutureLabs", "TechVentures",
-    "CloudSphere", "DataFlow", "NextGen Solutions", "ByteWorks", "CodeCraft"
-  ]
-
-  const getRandomElement = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
-
   return personalInfo.flatMap((info) => {
     const posts: ObfuscatedPost[] = []
 
-    // Generate multiple variations for each piece of real info
+    // Generate variations for each piece of real info
     for (let i = 0; i < 2; i++) {
       let fakeInfo: PersonalInfo
       let suggestedPost = ""
 
       switch (info.type) {
-        case "Full Name":
-          fakeInfo = { type: "Full Name", value: getRandomElement(fakeNames), source: "Generated" }
-          suggestedPost = `Just wrapped up another amazing project! Really enjoying my role as ${info.value} at ${getRandomElement(fakeWorkplaces)}! #CareerGrowth`
-          break
         case "Email":
-          const fakeName = getRandomElement(fakeNames).toLowerCase().replace(/\s+/g, '')
-          fakeInfo = { type: "Email", value: generateRandomEmail(fakeName), source: "Generated" }
-          suggestedPost = `You can reach our ${getRandomElement(fakeWorkplaces)} team at ${fakeInfo.value} or me at ${info.value} for any questions about our tech stack! #TechCommunity`
+          const randomIdentifier = Math.random().toString(36).substring(7)
+          fakeInfo = { 
+            type: "Email", 
+            value: generateRandomEmail(randomIdentifier), 
+            source: "Generated" 
+          }
+          suggestedPost = `For professional inquiries: ${fakeInfo.value}. For urgent matters: ${info.value}`
           break
+
         case "Phone":
-          fakeInfo = { type: "Phone", value: generateRandomPhone(), source: "Generated" }
-          suggestedPost = `Quick update: My work number changed to ${fakeInfo.value}, but you can still reach me at ${info.value} for urgent matters. #ContactUpdate`
+          fakeInfo = { 
+            type: "Phone", 
+            value: generateRandomPhone(), 
+            source: "Generated" 
+          }
+          suggestedPost = `Moving to dual numbers for work/personal. New contact: ${fakeInfo.value}. Keeping ${info.value} active for now.`
           break
+
         case "Location":
-          fakeInfo = { type: "Location", value: getRandomElement(fakeLocations), source: "Generated" }
-          suggestedPost = `Love being part of both the ${info.value} and ${fakeInfo.value} tech communities! The innovation happening in both cities is incredible! 🌆 #TechHub`
+          const cities = [
+            "Remote", "Hybrid-US", "US-West", "US-East", 
+            "Pacific Northwest", "Bay Area", "Mountain View",
+            "Greater Seattle Area", "Greater NYC Area"
+          ]
+          const randomLocation = cities[Math.floor(Math.random() * cities.length)]
+          fakeInfo = { 
+            type: "Location", 
+            value: randomLocation, 
+            source: "Generated" 
+          }
+          suggestedPost = `Working between ${info.value} and ${fakeInfo.value}. Love the tech scenes in both regions! #TechLife`
           break
+
         case "Workplace":
-          fakeInfo = { type: "Workplace", value: getRandomElement(fakeWorkplaces), source: "Generated" }
-          suggestedPost = `Excited to share that I'm consulting for both ${info.value} and ${fakeInfo.value}! The tech industry never stops evolving! #CareerMoves`
+          const workDescriptions = [
+            "Tech Consultant", "Software Engineer", "Full-Stack Developer",
+            "DevOps Specialist", "Cloud Architect", "Solutions Engineer"
+          ]
+          const randomRole = workDescriptions[Math.floor(Math.random() * workDescriptions.length)]
+          fakeInfo = { 
+            type: "Workplace", 
+            value: randomRole, 
+            source: "Generated" 
+          }
+          suggestedPost = `Exciting update: Now ${fakeInfo.value} while continuing projects at ${info.value}! #CareerGrowth`
           break
+
         default:
           continue
       }
