@@ -40,63 +40,71 @@ function generateRandomPhone(): string {
 }
 
 function generateObfuscatedPosts(personalInfo: PersonalInfo[]): ObfuscatedPost[] {
-  return personalInfo.flatMap((info) => {
-    const posts: ObfuscatedPost[] = []
+  const posts: ObfuscatedPost[] = [];
 
-    // Get other types of info to mix with
-    const otherTypes = personalInfo.filter(other => other.type !== info.type)
+  // Email mixed with Location
+  const emailInfo = personalInfo.find(info => info.type === "Email")!;
+  posts.push({
+    realInfo: emailInfo,
+    fakeInfo: {
+      type: "Location",
+      value: "Remote",
+      source: "Generated"
+    },
+    suggestedPost: `[r/programming] Organizing a distributed systems study group for those working ${emailInfo.value}. Looking for engineers interested in scalability patterns and cloud architecture. Running it remotely from ${fakeInfo.value} so anyone can join. DM me at ${emailInfo.value} if you want to participate in our weekly discussions.`
+  });
 
-    // Generate variations for each piece of real info
-    for (let i = 0; i < 2; i++) {
-      let fakeInfo: PersonalInfo
-      let suggestedPost = ""
+  // Phone mixed with Tech Role
+  const phoneInfo = personalInfo.find(info => info.type === "Phone")!;
+  posts.push({
+    realInfo: phoneInfo,
+    fakeInfo: {
+      type: "Workplace",
+      value: "Senior DevOps Engineer",
+      source: "Generated"
+    },
+    suggestedPost: `[r/devops] Looking to connect with other ${fakeInfo.value}s interested in infrastructure automation. I've been implementing Kubernetes and CI/CD pipelines for the past few years. Feel free to reach me at ${phoneInfo.value} if you want to discuss DevOps practices. Always happy to share knowledge about cloud-native architectures.`
+  });
 
-      switch (info.type) {
-        case "Email":
-          const randomIdentifier = Math.random().toString(36).substring(7)
-          fakeInfo = {
-            type: "Location",
-            value: "Remote",
-            source: "Generated"
-          }
-          suggestedPost = `Hey all, I've been working remotely from ${fakeInfo.value} lately. You can reach me at ${info.value} if anyone wants to collaborate on some interesting projects.`
-          break
+  // Location mixed with Email
+  const locationInfo = personalInfo.find(info => info.type === "Location")!;
+  const fakeEmail = generateRandomEmail(Math.random().toString(36).substring(7));
+  posts.push({
+    realInfo: locationInfo,
+    fakeInfo: {
+      type: "Email",
+      value: fakeEmail,
+      source: "Generated"
+    },
+    suggestedPost: `[r/learnprogramming] Any devs in ${locationInfo.value} interested in starting a local algo study group? We'll focus on practical interview prep and system design. Planning to meet twice a month at local coffee shops. Contact me at ${fakeEmail} to join our Discord server.`
+  });
 
-        case "Phone":
-          fakeInfo = {
-            type: "Workplace",
-            value: "Tech Consultant",
-            source: "Generated"
-          }
-          suggestedPost = `Question for other ${fakeInfo.value}s out there - I'm available at ${info.value} for networking. Always looking to connect with others in the field.`
-          break
+  // Workplace mixed with Phone
+  const workplaceInfo = personalInfo.find(info => info.type === "Workplace")!;
+  const fakePhone = generateRandomPhone();
+  posts.push({
+    realInfo: workplaceInfo,
+    fakeInfo: {
+      type: "Phone",
+      value: fakePhone,
+      source: "Generated"
+    },
+    suggestedPost: `[r/ExperiencedDevs] Our team at ${workplaceInfo.value} is expanding the backend infrastructure team. Looking for senior devs with distributed systems experience. Current stack includes Go, Rust, and Kubernetes. Reach out at ${fakePhone} to learn more about our engineering culture.`
+  });
 
-        case "Location":
-          fakeInfo = {
-            type: "Email",
-            value: generateRandomEmail(Math.random().toString(36).substring(7)),
-            source: "Generated"
-          }
-          suggestedPost = `Living in ${info.value} and looking for dev meetups. Drop me a line at ${fakeInfo.value} if you know of any good ones.`
-          break
+  // Name mixed with Remote Work
+  const nameInfo = personalInfo.find(info => info.type === "Full Name")!;
+  posts.push({
+    realInfo: nameInfo,
+    fakeInfo: {
+      type: "Location",
+      value: "Digital Nomad",
+      source: "Generated"
+    },
+    suggestedPost: `[r/digitalnomad] Hi all, ${nameInfo.value} here. Currently working as a ${fakeInfo.value} while traveling through tech hubs. Writing a guide about maintaining work-life balance while coding on the road. Would love to connect with other traveling developers and share experiences.`
+  });
 
-        case "Workplace":
-          fakeInfo = {
-            type: "Phone",
-            value: generateRandomPhone(),
-            source: "Generated"
-          }
-          suggestedPost = `Currently at ${info.value} and expanding my network. My work line is ${fakeInfo.value} if anyone wants to discuss potential collaborations.`
-          break
-
-        default:
-          continue
-      }
-
-      posts.push({ realInfo: info, fakeInfo, suggestedPost })
-    }
-    return posts
-  })
+  return posts;
 }
 
 export default function PrivacyProfile() {
