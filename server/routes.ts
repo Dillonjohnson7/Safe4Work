@@ -17,10 +17,10 @@ export function registerRoutes(app: Express): Server {
     const { username } = req.params;
     try {
       const samplePosts = [
-        // Good posts - Completely clean, professional content
+        // Good posts - No profanity at all
         {
           username,
-          content: "Excited to announce my new role as Senior Developer at TechCorp! Looking forward to this amazing opportunity. #NewBeginnings",
+          content: "This project deadline is really stressing me out. Need to focus and get it done!",
           category: "good",
           platform: "twitter",
           likes: 245,
@@ -28,7 +28,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "Just completed a great webinar on AI ethics in technology. Fascinating discussions about responsible innovation! #TechEthics",
+          content: "The customer service today was terrible. Had to wait 2 hours for a response!",
           category: "good",
           platform: "twitter",
           likes: 178,
@@ -36,17 +36,17 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "Proud to have contributed to our team's successful project launch today. Teamwork makes the dream work! 🚀",
+          content: "Cannot believe my coworker took credit for my work again. So frustrated right now!",
           category: "good",
           platform: "twitter",
           likes: 892,
           shares: 132,
         },
 
-        // Bad posts - Mild profanity and unprofessional content
+        // Bad posts - Mild profanity only
         {
           username,
-          content: "Damn this client is driving me crazy! Why can't people read the freaking documentation? 🤬",
+          content: "Damn this project deadline! Why do they keep changing the requirements? This is such crap!",
           category: "bad",
           platform: "twitter",
           likes: 56,
@@ -54,7 +54,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "These idiots at tech support don't know what the hell they're doing. Been on hold for 2 hours! #BadService",
+          content: "What the hell is wrong with customer service? 2 hours of my time wasted!",
           category: "bad",
           platform: "twitter",
           likes: 89,
@@ -62,17 +62,17 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "My boss is such a pain in the ass! Making us work overtime again. This crap needs to stop. 😤",
+          content: "My coworker is being a total ass taking credit for my work again. Pissed off!",
           category: "bad",
           platform: "twitter",
           likes: 234,
           shares: 45,
         },
 
-        // Ugly posts - Strong profanity and highly inappropriate content
+        // Ugly posts - Heavy profanity
         {
           username,
-          content: "F**k this job and f**k this company! Everyone here is full of sh*t! Quitting this b*tch tomorrow! 🖕",
+          content: "F**k this bulls**t project! These a**holes keep changing the f**king requirements!",
           category: "ugly",
           platform: "twitter",
           likes: 23,
@@ -80,7 +80,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "These stupid a** customers can kiss my f**king a**! I'm so done with this bulls**t! 🤬",
+          content: "This f**king customer service is complete s**t! Wasted my whole f**king day!",
           category: "ugly",
           platform: "twitter",
           likes: 67,
@@ -88,7 +88,7 @@ export function registerRoutes(app: Express): Server {
         },
         {
           username,
-          content: "My coworker is a worthless piece of sh*t! Hope you get f**king fired you lazy b*stard! 😡",
+          content: "That b**tard coworker stealing my f**king work again! I'm so f**king done with this s**t!",
           category: "ugly",
           platform: "twitter",
           likes: 156,
