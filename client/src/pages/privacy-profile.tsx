@@ -43,6 +43,9 @@ function generateObfuscatedPosts(personalInfo: PersonalInfo[]): ObfuscatedPost[]
   return personalInfo.flatMap((info) => {
     const posts: ObfuscatedPost[] = []
 
+    // Get other types of info to mix with
+    const otherTypes = personalInfo.filter(other => other.type !== info.type)
+
     // Generate variations for each piece of real info
     for (let i = 0; i < 2; i++) {
       let fakeInfo: PersonalInfo
@@ -52,49 +55,38 @@ function generateObfuscatedPosts(personalInfo: PersonalInfo[]): ObfuscatedPost[]
         case "Email":
           const randomIdentifier = Math.random().toString(36).substring(7)
           fakeInfo = { 
-            type: "Email", 
-            value: generateRandomEmail(randomIdentifier), 
+            type: "Location", 
+            value: "Remote", 
             source: "Generated" 
           }
-          suggestedPost = `For professional inquiries: ${fakeInfo.value}. For urgent matters: ${info.value}`
+          suggestedPost = `Hey all, I've been working remotely from ${fakeInfo.value} lately. You can reach me at ${info.value} if anyone wants to collaborate on some interesting projects.`
           break
 
         case "Phone":
+          fakeInfo = { 
+            type: "Workplace", 
+            value: "Tech Consultant", 
+            source: "Generated" 
+          }
+          suggestedPost = `Question for other ${fakeInfo.value}s out there - I'm available at ${info.value} for networking. Always looking to connect with others in the field.`
+          break
+
+        case "Location":
+          fakeInfo = { 
+            type: "Email", 
+            value: generateRandomEmail(Math.random().toString(36).substring(7)), 
+            source: "Generated" 
+          }
+          suggestedPost = `Living in ${info.value} and looking for dev meetups. Drop me a line at ${fakeInfo.value} if you know of any good ones.`
+          break
+
+        case "Workplace":
           fakeInfo = { 
             type: "Phone", 
             value: generateRandomPhone(), 
             source: "Generated" 
           }
-          suggestedPost = `Moving to dual numbers for work/personal. New contact: ${fakeInfo.value}. Keeping ${info.value} active for now.`
-          break
-
-        case "Location":
-          const cities = [
-            "Remote", "Hybrid-US", "US-West", "US-East", 
-            "Pacific Northwest", "Bay Area", "Mountain View",
-            "Greater Seattle Area", "Greater NYC Area"
-          ]
-          const randomLocation = cities[Math.floor(Math.random() * cities.length)]
-          fakeInfo = { 
-            type: "Location", 
-            value: randomLocation, 
-            source: "Generated" 
-          }
-          suggestedPost = `Working between ${info.value} and ${fakeInfo.value}. Love the tech scenes in both regions! #TechLife`
-          break
-
-        case "Workplace":
-          const workDescriptions = [
-            "Tech Consultant", "Software Engineer", "Full-Stack Developer",
-            "DevOps Specialist", "Cloud Architect", "Solutions Engineer"
-          ]
-          const randomRole = workDescriptions[Math.floor(Math.random() * workDescriptions.length)]
-          fakeInfo = { 
-            type: "Workplace", 
-            value: randomRole, 
-            source: "Generated" 
-          }
-          suggestedPost = `Exciting update: Now ${fakeInfo.value} while continuing projects at ${info.value}! #CareerGrowth`
+          suggestedPost = `Currently at ${info.value} and expanding my network. My work line is ${fakeInfo.value} if anyone wants to discuss potential collaborations.`
           break
 
         default:
