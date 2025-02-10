@@ -94,6 +94,18 @@ export default function Dashboard() {
                         content="Frustrated with my bank! Account #1234567890 at Western Union keeps getting charged fees. DOB: 04/15/1985"
                         piiFound={["Bank Account Number", "Date of Birth"]}
                       />
+                      <PIIPost
+                        content="Just graduated from Washington State University, class of 2024! Starting my new job as Senior Developer at TechCorp next week. So excited! 🎓"
+                        piiFound={["Educational Institution", "Graduation Year", "Employer", "Job Title"]}
+                      />
+                      <PIIPost
+                        content="Follow me on Instagram @john.smith85! Also, check out my red Tesla Model 3 (plate: ABC123) in the company parking lot near Building C."
+                        piiFound={["Social Media Handle", "Vehicle Details", "License Plate", "Workplace Location"]}
+                      />
+                      <PIIPost
+                        content="My cat Mr. Whiskers had surgery at Eastside Vet Clinic yesterday. The vet bill was charged to my Visa card ending in 4321. Get well soon buddy!"
+                        piiFound={["Pet Name", "Healthcare Provider", "Partial Credit Card Number"]}
+                      />
                     </div>
                   </div>
                   <div className="p-4 bg-orange-100 rounded-lg">
