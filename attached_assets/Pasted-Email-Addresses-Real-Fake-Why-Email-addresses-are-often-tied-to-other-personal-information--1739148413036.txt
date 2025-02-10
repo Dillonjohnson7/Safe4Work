@@ -1,0 +1,20 @@
+Email Addresses (Real + Fake):
+	•	Why: Email addresses are often tied to other personal information across services and can be used to track your digital footprint.
+	•	How to Obfuscate: Use fake but realistic-looking email addresses that fit a pattern (e.g., firstnamelastname@email.com). Create fake emails with free email services (Gmail, Yahoo, etc.) but avoid being too consistent—mix different domains or use variations of your real email.
+	•	Example: If your real email is “alicecooper@gmail.com,” you might add a fake email like “megan.taylor@yahoo.com” in some posts.
+	3.	Phone Numbers (Real + Fake):
+	•	Why: Phone numbers can be highly identifiable, especially when combined with a name and location.
+	•	How to Obfuscate: Use randomly generated phone numbers that appear normal in format but are not connected to you. The key here is to ensure that the numbers look plausible, but don’t follow the same pattern as your real phone number (e.g., area code, sequence).
+	•	Example: If your real number is “(123) 456-7890,” you could add a fake phone number like “(800) 555-1234.”
+	4.	Social Media Handles (Real + Fake):
+	•	Why: Handles are often linked across different platforms (Twitter, Reddit, Instagram, etc.), making it easier to trace profiles.
+	•	How to Obfuscate: You can mix fake social media handles with your real ones, making it harder for someone to identify all your accounts.
+	•	Example: If your Reddit handle is “@alice_cooper,” add fake handles like “@megan_taylor89” or “@john_richards55” on posts that may be cross-referenced.
+	5.	Geolocation/Location Information (Real + Fake):
+	•	Why: Location is one of the easiest identifiers and is often shared without thinking.
+	•	How to Obfuscate: If you’ve posted about your city or region, you can add fake locations in other posts or profiles to obscure your true whereabouts. Use plausible locations (cities that are not too far from your real one) or even fictional places if they fit the context.
+	•	Example: If you’re based in New York, you might add a fake location like “Chicago, IL” or “Los Angeles, CA” in some posts.
+	6.	Date of Birth (DOB) (Real + Fake):
+	•	Why: DOB is a critical piece of personal information and can easily be used to cross-reference with other details.
+	•	How to Obfuscate: Alter your DOB by a year or two, or generate completely new DOBs that look realistic but don’t match your actual age or date of birth.
+	•	Example: If your real DOB is “March 12, 1990,” use something like “May 4, 1987” for other posts.
