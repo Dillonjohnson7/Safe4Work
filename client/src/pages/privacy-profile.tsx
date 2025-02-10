@@ -22,7 +22,7 @@ const samplePersonalInfo: PersonalInfo[] = [
   { type: "Phone", value: "(555) 123-4567", source: "Contact information" },
   { type: "Location", value: "Seattle", source: "Restaurant recommendations" },
   { type: "Workplace", value: "TechCorp", source: "Job announcement" },
-]
+];
 
 function generateRandomEmail(name: string): string {
   const domains = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "protonmail.com"]
@@ -54,37 +54,37 @@ function generateObfuscatedPosts(personalInfo: PersonalInfo[]): ObfuscatedPost[]
       switch (info.type) {
         case "Email":
           const randomIdentifier = Math.random().toString(36).substring(7)
-          fakeInfo = { 
-            type: "Location", 
-            value: "Remote", 
-            source: "Generated" 
+          fakeInfo = {
+            type: "Location",
+            value: "Remote",
+            source: "Generated"
           }
           suggestedPost = `Hey all, I've been working remotely from ${fakeInfo.value} lately. You can reach me at ${info.value} if anyone wants to collaborate on some interesting projects.`
           break
 
         case "Phone":
-          fakeInfo = { 
-            type: "Workplace", 
-            value: "Tech Consultant", 
-            source: "Generated" 
+          fakeInfo = {
+            type: "Workplace",
+            value: "Tech Consultant",
+            source: "Generated"
           }
           suggestedPost = `Question for other ${fakeInfo.value}s out there - I'm available at ${info.value} for networking. Always looking to connect with others in the field.`
           break
 
         case "Location":
-          fakeInfo = { 
-            type: "Email", 
-            value: generateRandomEmail(Math.random().toString(36).substring(7)), 
-            source: "Generated" 
+          fakeInfo = {
+            type: "Email",
+            value: generateRandomEmail(Math.random().toString(36).substring(7)),
+            source: "Generated"
           }
           suggestedPost = `Living in ${info.value} and looking for dev meetups. Drop me a line at ${fakeInfo.value} if you know of any good ones.`
           break
 
         case "Workplace":
-          fakeInfo = { 
-            type: "Phone", 
-            value: generateRandomPhone(), 
-            source: "Generated" 
+          fakeInfo = {
+            type: "Phone",
+            value: generateRandomPhone(),
+            source: "Generated"
           }
           suggestedPost = `Currently at ${info.value} and expanding my network. My work line is ${fakeInfo.value} if anyone wants to discuss potential collaborations.`
           break
@@ -162,10 +162,10 @@ export default function PrivacyProfile() {
                     <div className="flex justify-between items-start mb-2">
                       <div className="space-y-1">
                         <p className="text-sm text-gray-500">
-                          Mixing: {post.realInfo.type} ({post.realInfo.value})
+                          Personal Data: {post.realInfo.type} ({post.realInfo.value})
                         </p>
                         <p className="text-sm text-gray-500">
-                          With: {post.fakeInfo.type} ({post.fakeInfo.value})
+                          Obscured Data: {post.fakeInfo.type} ({post.fakeInfo.value})
                         </p>
                       </div>
                       <Button
