@@ -1,7 +1,9 @@
+import { useState } from "react"
 import { Card, CardHeader, CardContent } from "@/components/ui/card"
 import { Shield, Copy, AlertTriangle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
+import { motion, AnimatePresence } from "framer-motion"
 
 interface PersonalInfo {
   type: string
@@ -112,6 +114,8 @@ function generateObfuscatedPosts(personalInfo: PersonalInfo[]): ObfuscatedPost[]
 
 export default function PrivacyProfile() {
   const { toast } = useToast()
+  const [showPosts, setShowPosts] = useState(false)
+  const [isGenerating, setIsGenerating] = useState(false)
   const obfuscatedPosts = generateObfuscatedPosts(samplePersonalInfo)
 
   const copyToClipboard = (text: string) => {
@@ -120,6 +124,14 @@ export default function PrivacyProfile() {
       title: "Copied to clipboard!",
       description: "You can now paste this text into your Reddit post.",
     })
+  }
+
+  const handleGeneratePosts = async () => {
+    setIsGenerating(true)
+    // Simulate generation time
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    setShowPosts(true)
+    setIsGenerating(false)
   }
 
   return (
@@ -156,45 +168,87 @@ export default function PrivacyProfile() {
             </CardContent>
           </Card>
 
-          {/* Suggested Obfuscation Posts */}
-          <Card>
-            <CardHeader className="flex flex-row items-center gap-2">
-              <Shield className="h-6 w-6 text-green-500" />
-              <h2 className="text-2xl font-bold text-gray-900">Suggested Privacy-Enhancing Posts</h2>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 mb-6">
-                These posts mix real and fake information to help obscure your digital footprint. Use them occasionally
-                to create uncertainty about your true personal details.
-              </p>
-              <div className="space-y-6">
-                {obfuscatedPosts.map((post, index) => (
-                  <div key={index} className="p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="space-y-1">
-                        <p className="text-sm text-gray-500">
-                          Personal Data: {post.realInfo.type} ({post.realInfo.value})
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          Obscured Data: {post.fakeInfo.type} ({post.fakeInfo.value})
-                        </p>
-                      </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => copyToClipboard(post.suggestedPost)}
-                        className="flex items-center gap-2"
-                      >
-                        <Copy className="h-4 w-4" />
-                        Copy
-                      </Button>
+          {/* Generate Posts Button */}
+          <div className="flex justify-center">
+            <Button
+              onClick={handleGeneratePosts}
+              disabled={isGenerating || showPosts}
+              className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full font-medium flex items-center gap-2 transition-all duration-200"
+            >
+              {isGenerating ? (
+                <>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                  />
+                  <span>Generating Privacy Posts...</span>
+                </>
+              ) : (
+                <>
+                  <Shield className="h-5 w-5" />
+                  <span>Generate Sample Posts</span>
+                </>
+              )}
+            </Button>
+          </div>
+
+          {/* Privacy-Enhancing Posts */}
+          <AnimatePresence>
+            {showPosts && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Card>
+                  <CardHeader className="flex flex-row items-center gap-2">
+                    <Shield className="h-6 w-6 text-green-500" />
+                    <h2 className="text-2xl font-bold text-gray-900">Suggested Privacy-Enhancing Posts</h2>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 mb-6">
+                      These posts mix real and fake information to help obscure your digital footprint. Use them occasionally
+                      to create uncertainty about your true personal details.
+                    </p>
+                    <div className="space-y-6">
+                      {obfuscatedPosts.map((post, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: index * 0.1 }}
+                          className="p-4 bg-white rounded-lg border border-gray-200 shadow-sm"
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <div className="space-y-1">
+                              <p className="text-sm text-gray-500">
+                                Personal Data: {post.realInfo.type} ({post.realInfo.value})
+                              </p>
+                              <p className="text-sm text-gray-500">
+                                Obscured Data: {post.fakeInfo.type} ({post.fakeInfo.value})
+                              </p>
+                            </div>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => copyToClipboard(post.suggestedPost)}
+                              className="flex items-center gap-2"
+                            >
+                              <Copy className="h-4 w-4" />
+                              Copy
+                            </Button>
+                          </div>
+                          <p className="text-gray-800 bg-gray-50 p-3 rounded-lg">{post.suggestedPost}</p>
+                        </motion.div>
+                      ))}
                     </div>
-                    <p className="text-gray-800 bg-gray-50 p-3 rounded-lg">{post.suggestedPost}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </main>
