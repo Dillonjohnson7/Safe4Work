@@ -44,64 +44,67 @@ function generateObfuscatedPosts(personalInfo: PersonalInfo[]): ObfuscatedPost[]
 
   // Email mixed with Location
   const emailInfo = personalInfo.find(info => info.type === "Email")!;
+  const remoteFakeInfo = {
+    type: "Location",
+    value: "Remote",
+    source: "Generated"
+  };
   posts.push({
     realInfo: emailInfo,
-    fakeInfo: {
-      type: "Location",
-      value: "Remote",
-      source: "Generated"
-    },
-    suggestedPost: `[r/programming] Organizing a distributed systems study group for those working ${emailInfo.value}. Looking for engineers interested in scalability patterns and cloud architecture. Running it remotely from ${fakeInfo.value} so anyone can join. DM me at ${emailInfo.value} if you want to participate in our weekly discussions.`
+    fakeInfo: remoteFakeInfo,
+    suggestedPost: `[r/programming] Organizing a distributed systems study group for those interested in scalability patterns and cloud architecture. Running it remotely from ${remoteFakeInfo.value} so anyone can join. Contact me at ${emailInfo.value} if you want to participate. Weekly discussions focusing on real-world system design challenges.`
   });
 
   // Phone mixed with Tech Role
   const phoneInfo = personalInfo.find(info => info.type === "Phone")!;
+  const roleFakeInfo = {
+    type: "Workplace",
+    value: "Senior DevOps Engineer",
+    source: "Generated"
+  };
   posts.push({
     realInfo: phoneInfo,
-    fakeInfo: {
-      type: "Workplace",
-      value: "Senior DevOps Engineer",
-      source: "Generated"
-    },
-    suggestedPost: `[r/devops] Looking to connect with other ${fakeInfo.value}s interested in infrastructure automation. I've been implementing Kubernetes and CI/CD pipelines for the past few years. Feel free to reach me at ${phoneInfo.value} if you want to discuss DevOps practices. Always happy to share knowledge about cloud-native architectures.`
+    fakeInfo: roleFakeInfo,
+    suggestedPost: `[r/devops] Looking to connect with other ${roleFakeInfo.value}s interested in infrastructure automation. Been implementing Kubernetes and CI/CD pipelines for the past few years. Reach me at ${phoneInfo.value} if you want to discuss DevOps practices. Always happy to share knowledge about cloud-native architectures.`
   });
 
   // Location mixed with Email
   const locationInfo = personalInfo.find(info => info.type === "Location")!;
-  const fakeEmail = generateRandomEmail(Math.random().toString(36).substring(7));
+  const emailFakeInfo = {
+    type: "Email",
+    value: generateRandomEmail(Math.random().toString(36).substring(7)),
+    source: "Generated"
+  };
   posts.push({
     realInfo: locationInfo,
-    fakeInfo: {
-      type: "Email",
-      value: fakeEmail,
-      source: "Generated"
-    },
-    suggestedPost: `[r/learnprogramming] Any devs in ${locationInfo.value} interested in starting a local algo study group? We'll focus on practical interview prep and system design. Planning to meet twice a month at local coffee shops. Contact me at ${fakeEmail} to join our Discord server.`
+    fakeInfo: emailFakeInfo,
+    suggestedPost: `[r/learnprogramming] Any devs in ${locationInfo.value} interested in starting a local algo study group? We'll focus on practical interview prep and system design. Planning to meet twice a month at local coffee shops. Contact me at ${emailFakeInfo.value} to join our Discord server.`
   });
 
   // Workplace mixed with Phone
   const workplaceInfo = personalInfo.find(info => info.type === "Workplace")!;
-  const fakePhone = generateRandomPhone();
+  const phoneFakeInfo = {
+    type: "Phone",
+    value: generateRandomPhone(),
+    source: "Generated"
+  };
   posts.push({
     realInfo: workplaceInfo,
-    fakeInfo: {
-      type: "Phone",
-      value: fakePhone,
-      source: "Generated"
-    },
-    suggestedPost: `[r/ExperiencedDevs] Our team at ${workplaceInfo.value} is expanding the backend infrastructure team. Looking for senior devs with distributed systems experience. Current stack includes Go, Rust, and Kubernetes. Reach out at ${fakePhone} to learn more about our engineering culture.`
+    fakeInfo: phoneFakeInfo,
+    suggestedPost: `[r/ExperiencedDevs] Our team at ${workplaceInfo.value} is expanding the backend infrastructure team. Looking for senior devs with distributed systems experience. Current stack includes Go, Rust, and Kubernetes. Reach out at ${phoneFakeInfo.value} to learn more about our engineering culture.`
   });
 
   // Name mixed with Remote Work
   const nameInfo = personalInfo.find(info => info.type === "Full Name")!;
+  const locationFakeInfo = {
+    type: "Location",
+    value: "Digital Nomad",
+    source: "Generated"
+  };
   posts.push({
     realInfo: nameInfo,
-    fakeInfo: {
-      type: "Location",
-      value: "Digital Nomad",
-      source: "Generated"
-    },
-    suggestedPost: `[r/digitalnomad] Hi all, ${nameInfo.value} here. Currently working as a ${fakeInfo.value} while traveling through tech hubs. Writing a guide about maintaining work-life balance while coding on the road. Would love to connect with other traveling developers and share experiences.`
+    fakeInfo: locationFakeInfo,
+    suggestedPost: `[r/digitalnomad] Hi all, ${nameInfo.value} here. Currently working as a ${locationFakeInfo.value} while traveling through tech hubs. Writing a guide about maintaining work-life balance while coding on the road. Would love to connect with other traveling developers and share experiences.`
   });
 
   return posts;
