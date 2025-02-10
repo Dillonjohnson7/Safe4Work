@@ -8,8 +8,9 @@ import TabularView from "./TabularView"
 import PlatformToggle, { type Platform } from "./PlatformToggle"
 import { useQuery } from "@tanstack/react-query"
 import { Card, CardHeader, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button" // Added Button import
 import { RocketIcon, ShieldAlertIcon } from "lucide-react"
-import { Shield } from "lucide-react"; // Added import for Shield icon
+import { Shield } from "lucide-react"
 
 
 export interface Post {
